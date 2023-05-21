@@ -1,21 +1,28 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
+import { useEffect, useState } from "react";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import Sidebar from "@/Components/Sidebar";
+import MenuProduct from "@/Components/MenuProduct";
 
 export default function Dashboard({ auth }) {
-    return (
-        <AuthenticatedLayout
-            user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>}
-        >
-            <Head title="Dashboard" />
+    const [selectedKey, setSelectedKey] = useState("products");
+    const [content, setContent] = useState(<h1>halo</h1>);
 
-            <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="p-6 text-gray-900">You're logged in!</div>
-                    </div>
-                </div>
-            </div>
+    useEffect(() => {
+        console.log(selectedKey);
+        switch (selectedKey) {
+            case "products":
+                setContent(<MenuProduct />);
+                break;
+
+            default:
+                setContent(<h1>HOHOHO</h1>);
+                break;
+        }
+    }, [selectedKey]);
+
+    return (
+        <AuthenticatedLayout user={auth.user}>
+            <Sidebar setSelectedKey={setSelectedKey} content={content} />
         </AuthenticatedLayout>
     );
 }
